@@ -9,9 +9,13 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /templates
+
 - url: .*
   script: main.app
 
 libraries:
+- name: jinja2
+  version: latest
 - name: webapp2
   version: "2.5.2"
