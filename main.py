@@ -18,7 +18,7 @@ import webapp2
 import jinja2
 import os
 from google.appengine.api import users
-#import ndb classes from outside
+#import ndb models from outside
 
 jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
