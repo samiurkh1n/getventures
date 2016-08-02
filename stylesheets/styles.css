@@ -1,9 +1,9 @@
 body {
-  background-color: #FF80AB;
+  background-image: url(http://www.planwallpaper.com/static/images/518164-backgrounds.jpg);
 }
 
 h1 {
-  background-color: #E91E63;
+  background-color: #1E90FF;
 }
 
 
@@ -20,15 +20,20 @@ button {
   position: relative;
   top:50%;
   left:50%;
-  background-color: black;
-  color: #E91E63;
+  background-color: #1E90FF;
+
 }
 
 h2 {
-  	background-color: #E91E63
+  	background-color: #1E90FF
 }
 
 	#create {
     height: 100px;
    width: 400px;
+  }
+
+  #dropdown {
+    width:150px;
+    height:400px;
   }

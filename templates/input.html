@@ -7,22 +7,25 @@
   </head>
 
   <body>
-    <form method =post action="EventHandler">
+    <form method =post action ="event">
     <div id="event">
 
-      <p class = "center">Create a Name for this Event <input type="text" name="name"/></p>
+      <p class = "center">Create a Name for this Event <input type="text" name="session_name"/></p>
 
     </div>
 
     <div class= "center" id = "blob">
-      <p> <h1 class= "center">Invite Friends!</h1>
+      <p> <h1 class= "center">Invite Friends! (leave email line blank)</h1>
 
-      <p class= "center">Add Friend #1 Email <input type="email" name="email1"/></p>
-      <p class= "center">Add Friend #2 Email <input type="email" name="email2"/></p>
-      <p class= "center">Add Friend #3 Email <input type="email" name="email3"/></p>
+      <p class= "center">Add Friend #1 Email <input type="email" name="session_guest"/></p>
+      <p class= "center">Add Friend #2 Email <input type="email" name="session_guest"/></p>
+      <p class= "center">Add Friend #3 Email <input type="email" name="session_guest"/></p>
+      <p class= "center">Add Friend #4 Email <input type="email" name="session_guest"/></p>
+      <p class= "center">Add Friend #5 Email <input type="email" name="session_guest"/></p>
+
 
     <h2 class= "center">Select what you would like to do!</h2>
-      <select class= "center">
+      <select id="dropdown" name="place_type" class= "center">
       <option class= "center" value="restuarant" >Restaurant</option>
       <option class= "center" value="cafe" >Cafe</option>
       <option class= "center" value="park" >Park</option>
@@ -40,7 +43,6 @@
   </form>
 
   <div>
-    <img src="http://blogs-images.forbes.com/steveolenski/files/2015/07/Messe_Luzern_Corporate_Event.jpg" style="width:304px;height:228px;">
 
 
   </div>
