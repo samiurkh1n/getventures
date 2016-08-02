@@ -41,6 +41,15 @@ class MainHandler(webapp2.RequestHandler):
         else:
             self.greeting = ('<a href="%s">Sign in or register</a>') %users.create_login_url('/account')
         return self.greeting
+
+    def alert_user_of_login(self):
+        user = users.get_current_user()
+        # Warns user that they need to log in, else it breaks the function
+        if user:
+            pass
+        else:
+            self.warning = ('<script> alert("Please login."); </script>')
+        return self.warning
     
     def get(self):
         '''
@@ -52,7 +61,7 @@ class MainHandler(webapp2.RequestHandler):
         # Greeting is a test of whether the user logged-in.
         greeting = self.check_login()
         self.response.write("%s" %greeting)
-        # Main.html contains a button to plan event.
+        # Main.html contains a button to plan event that redirects an GET request to EventHandler ('/event')
         self.response.write(template.render())
  
     def post(self):
@@ -63,8 +72,10 @@ class MainHandler(webapp2.RequestHandler):
         // TODO: Consult Emma on variable names
         '''
         # Executes with POST/. Specifically, when the user clicks on the "Plan meetup" button.
-        self.redirect('/event')
-        # TODO: Cannot let the user go onto the next page unless they sign in/sign up.
+        # Does not allow it if user not logged in.
+        warning = self.alert_user_of_login()
+        self.response.write("%s" %warning)
+        self.redirect('/event') 
         
 
 class AccountHandler(webapp2.RequestHandler):
@@ -87,9 +98,8 @@ class AccountHandler(webapp2.RequestHandler):
         1. Redisplay user inputs
         2. Store user input into User data store.
         '''
-        #Associate query string with variables.
-        #Declare user variable of type User (which is a ndb model).
-        #Store the variables in data store.
+        # variable names firstname, lastname, lastknownlong, lastknownlat
+        current_user = User(email=users.get_current_user(),first_name=firstname,lastknown_latitude=lastknownlong,lastknown_longitude=lastknownlat) 
 
 class EventHandler(webapp2.RequestHandler):
     def get(self):
@@ -108,6 +118,11 @@ class EventHandler(webapp2.RequestHandler):
         Input is the user query attached to variables and other user data (ex: location in lat and long)
         Output is the map and list and the subsequent storage into an object of type Event (ndb model). 
         '''
+        template = jinja_environment.get_template('templates/output.html')
+        #compute here
+        self.response.write(template.render())
+        # jinja variables are session_name, session_description, session_guests, place_type, map_output, list_output
+        current_session = Meetup(name=session_name,description=session_description,event_admin=users.get_current_user(),event_participants=session_guests,type_of_places=place_type,recommendation_map=map_output,recommendation_list=list_output)
         
 
 app = webapp2.WSGIApplication([
