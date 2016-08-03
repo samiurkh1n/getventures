@@ -12,6 +12,7 @@ class GvUser(ndb.Model):
     email = ndb.StringProperty(required=True)
     first_name = ndb.StringProperty(required=False)
     last_name = ndb.StringProperty(required=False)
+    id = ndb.StringProperty(required=False)
     lastknown_latitude = ndb.FloatProperty(required=False)
     lastknown_longitude = ndb.FloatProperty(required=False)
     

@@ -64,12 +64,8 @@ class MainHandler(webapp2.RequestHandler):
         # Does not allow it if user not logged in.
         user = users.get_current_user()
         if user:
-        # add an if branch here to test if the user's first name is the database, in which case if it isn't redirect to account
-            
             app_user = GvUser.get_by_id(user.user_id())
             if app_user:
-                loggedin_alert = '<script> alert("Welcome back!"); </script>'
-                self.response.write('%s' %loggedin_alert)  
                 self.redirect('/event')
             else:
                 self.redirect('/account')
@@ -103,16 +99,16 @@ class AccountHandler(webapp2.RequestHandler):
         '''
         Executes with the POST /account. User adds account information this way.
         Input is a POST request.  User query string is stored via jinja variables. 
-        // TODO: Consult Emma on variable names
         Output should 
         1. Redisplay user inputs
         2. Store user input into User data store.
         '''
-        user = users.get_current_user()
+        
+        app_user = users.get_current_user()
         firstname = self.request.get('firstname')
         lastname = self.request.get('lastname')
-        user_email = self.request.get('email')
-        current_user = GvUser(email=user_email,first_name=firstname,last_name=lastname,id=user.user_id())
+        user_email = self.request.get('email') #add into html
+        current_user = GvUser(email=user_email,first_name=firstname,last_name=lastname,id=app_user.user_id())
         current_user.put()
         
         self.redirect('/event') 
