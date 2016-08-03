@@ -136,7 +136,7 @@ class EventHandler(webapp2.RequestHandler):
         Output is the map and list and the subsequent storage into an object of type Event (ndb model). 
         '''
         template = jinja_environment.get_template('templates/output.html')
-        self.response.write(template.render())
+        
 
         #User input stored as variables
         session_name = self.request.get('session_name')
@@ -155,6 +155,8 @@ class EventHandler(webapp2.RequestHandler):
             'session_name': session_name,
             'place_type':place_type
             }
+
+        self.response.write(template.render(template_vars))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
