@@ -146,15 +146,15 @@ class EventHandler(webapp2.RequestHandler):
         session_guest4 = self.request.get('session_guest4')
         session_guest5 = self.request.get('session_guest5')
         place_type = self.request.get('place_type') 
-
-        #display output map
-        output_map = self.response.write("map here")
-        self.response.write(output_map) 
-
+        
         #send data to datastore
         current_session = Meetup(name=session_name,event_admin="samiurkh1n@gmail.com",guest1=session_guest1,guest2=session_guest2,guest3=session_guest3,guest4=session_guest4,guest5=session_guest5,type_of_places=place_type)
         current_session.put()
-        
+
+        template_vars = {
+            'session_name' = session_name,
+            'place_type' = place_type
+            }
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
