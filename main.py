@@ -21,7 +21,7 @@ from google.appengine.api import users
 from models import User
 from models import Meetup
 
-jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__))) 
 
 ### VERY IMPORTANT TODO - discuss with Emma how variables are being sent around.
 
@@ -42,15 +42,6 @@ class MainHandler(webapp2.RequestHandler):
             self.greeting = ('<a href="%s">Sign in or register</a>') %users.create_login_url('/account')
         return self.greeting
 
-    def alert_user_of_login(self):
-        user = users.get_current_user()
-        # Warns user that they need to log in, else it breaks the function
-        if user:
-            pass
-        else:
-            self.warning = ('<script> alert("Please login."); </script>')
-        return self.warning
-    
     def get(self):
         '''
         Executes when the GET / HTTP request is received.
@@ -69,22 +60,31 @@ class MainHandler(webapp2.RequestHandler):
         Executes when the HTTP POST/ request is received. 
         Specifically, when the user clicks on the "Plan meetup" button.
         Input is the POST request. User query string is stored via jinja variables. 
-        // TODO: Consult Emma on variable names
+        // TODO: add post to this handler to main.html button
         '''
         # Executes with POST/. Specifically, when the user clicks on the "Plan meetup" button.
         # Does not allow it if user not logged in.
-        warning = self.alert_user_of_login()
-        self.response.write("%s" %warning)
-        self.redirect('/event') 
+        user = users.get_current_user()
+        if user:
+            # add an if branch here to test if the user's first name is the database, in which case if it isn't redirect to account
+            self.redirect('/event')
+        else:
+            warning = '<script> alert("Please login."); </script>'
+            self.response.write('%s' %warning)
         
 
 class AccountHandler(webapp2.RequestHandler):
+    '''
+    AccountHandler allows account holders to include information like first and last name.
+    This handler should execute if and only if the user has no first name and last name in the datastore. 
+    '''
 
     def get(self):
         '''
         Executes with GET /account. 
         Input is a GET request.
         Output is the rendering of account.html located in the templates folder.
+        User.html is a form to add first and last name and should only execute if user first name and last name isn't stored already.
         '''
         template = jinja_environment.get_template('templates/user.html')
         self.response.write(template.render())
@@ -98,8 +98,12 @@ class AccountHandler(webapp2.RequestHandler):
         1. Redisplay user inputs
         2. Store user input into User data store.
         '''
-        # variable names firstname, lastname, lastknownlong, lastknownlat
-        current_user = User(email=users.get_current_user(),first_name=firstname,lastknown_latitude=lastknownlong,lastknown_longitude=lastknownlat) 
+        firstname = self.request.get('#firstnamejinja')
+        lastname = self.request.get('#lastnamejinja')
+        # TODO - let Emma know that the jinja variable names are firstname, lastname. Replace get arguments once she places it in
+        current_user = User(email=users.get_current_user(),first_name=firstname,last_name=lastname)
+        current_user.put()
+        # TODO - add button to this html page to redirect to the event handler
 
 class EventHandler(webapp2.RequestHandler):
     def get(self):
@@ -109,6 +113,7 @@ class EventHandler(webapp2.RequestHandler):
         Output is a rendering of the input.html file
         '''
         template = jinja_environment.get_template('templates/input.html')
+        # Get location script should be triggered here and store location in datastore
         self.response.write(template.render())
         
     def post(self):
@@ -121,7 +126,8 @@ class EventHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('templates/output.html')
         #compute here
         self.response.write(template.render())
-        # jinja variables are session_name, session_description, session_guests, place_type, map_output, list_output
+        
+        # jinja variables are session_name, session_description, session_guest, place_type, map_output, list_output
         current_session = Meetup(name=session_name,description=session_description,event_admin=users.get_current_user(),event_participants=session_guests,type_of_places=place_type,recommendation_map=map_output,recommendation_list=list_output)
         
 
