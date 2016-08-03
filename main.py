@@ -18,7 +18,7 @@ import webapp2
 import jinja2
 import os
 from google.appengine.api import users
-from models import User
+from models import GvUser
 from models import Meetup
 
 jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__))) 
@@ -34,12 +34,12 @@ class MainHandler(webapp2.RequestHandler):
         Input originates from the User API. The user variable stores the user email.
         Output is a set of text displaying the login status. 
         '''
-        user = users.get_current_user()
+        app_user = users.get_current_user()
         # Check to see if user logged in
         if user:
             self.greeting = ('Welcome, %s (<a href="%s">Sign out</a>)') %(user.nickname(), users.create_logout_url('/'))
         else:
-            self.greeting = ('<a href="%s">Sign in or register</a>') %users.create_login_url('/account')
+            self.greeting = ('<a href="%s">Sign in or register</a>') %users.create_login_url('/')
         return self.greeting
 
     def get(self):
@@ -52,7 +52,6 @@ class MainHandler(webapp2.RequestHandler):
         # Greeting is a test of whether the user logged-in.
         greeting = self.check_login()
         self.response.write("%s" %greeting)
-        # Main.html contains a button to plan event that redirects an GET request to EventHandler ('/event')
         self.response.write(template.render())
  
     def post(self):
@@ -60,17 +59,26 @@ class MainHandler(webapp2.RequestHandler):
         Executes when the HTTP POST/ request is received. 
         Specifically, when the user clicks on the "Plan meetup" button.
         Input is the POST request. User query string is stored via jinja variables. 
-        // TODO: add post to this handler to main.html button
         '''
         # Executes with POST/. Specifically, when the user clicks on the "Plan meetup" button.
         # Does not allow it if user not logged in.
         user = users.get_current_user()
         if user:
-            # add an if branch here to test if the user's first name is the database, in which case if it isn't redirect to account
-            self.redirect('/event')
+        # add an if branch here to test if the user's first name is the database, in which case if it isn't redirect to account
+            app_user = GvUser.get_by_id(users.user_id())
+            if app_user:
+                loggedin_alert = '<script> alert("Welcome back!"); </script>'
+                self.response.write('%s' %loggedin_alert)  
+                self.redirect('/event')
+            else:
+                self.redirect('/account')
         else:
+            template = jinja_environment.get_template('templates/main.html')
             warning = '<script> alert("Please login."); </script>'
             self.response.write('%s' %warning)
+            greeting = self.check_login()
+            self.response.write("%s" %greeting)
+            self.response.write(template.render())
         
 
 class AccountHandler(webapp2.RequestHandler):
@@ -79,6 +87,7 @@ class AccountHandler(webapp2.RequestHandler):
     This handler should execute if and only if the user has no first name and last name in the datastore. 
     '''
 
+    # TODO - get user id, check if the user id exists, then just retrieve user, otherwise retrieve new user
     def get(self):
         '''
         Executes with GET /account. 
@@ -98,12 +107,14 @@ class AccountHandler(webapp2.RequestHandler):
         1. Redisplay user inputs
         2. Store user input into User data store.
         '''
-        firstname = self.request.get('#firstnamejinja')
-        lastname = self.request.get('#lastnamejinja')
-        # TODO - let Emma know that the jinja variable names are firstname, lastname. Replace get arguments once she places it in
-        current_user = User(email=users.get_current_user(),first_name=firstname,last_name=lastname)
+        user = users.get_current_user()
+        firstname = self.request.get('firstname')
+        lastname = self.request.get('lastname')
+        user_email = self.request.get('email')
+        current_user = GvUser(email=user_email,first_name=firstname,last_name=lastname,id=user.user_id())
         current_user.put()
-        # TODO - add button to this html page to redirect to the event handler
+        
+        self.redirect('/event') 
 
 class EventHandler(webapp2.RequestHandler):
     def get(self):
@@ -124,11 +135,24 @@ class EventHandler(webapp2.RequestHandler):
         Output is the map and list and the subsequent storage into an object of type Event (ndb model). 
         '''
         template = jinja_environment.get_template('templates/output.html')
-        #compute here
         self.response.write(template.render())
-        
-        # jinja variables are session_name, session_description, session_guest, place_type, map_output, list_output
-        current_session = Meetup(name=session_name,description=session_description,event_admin=users.get_current_user(),event_participants=session_guests,type_of_places=place_type,recommendation_map=map_output,recommendation_list=list_output)
+
+        #User input stored as variables
+        session_name = self.request.get('session_name')
+        session_guest1 = self.request.get('session_guest1')
+        session_guest2 = self.request.get('session_guest2')
+        session_guest3 = self.request.get('session_guest3')
+        session_guest4 = self.request.get('session_guest4')
+        session_guest5 = self.request.get('session_guest5')
+        place_type = self.request.get('place_type') 
+
+        #display output map
+        output_map = self.response.write("map here")
+        self.response.write(output_map) 
+
+        #send data to datastore
+        current_session = Meetup(name=session_name,event_admin="samiurkh1n@gmail.com",guest1=session_guest1,guest2=session_guest2,guest3=session_guest3,guest4=session_guest4,guest5=session_guest5,type_of_places=place_type)
+        current_session.put()
         
 
 app = webapp2.WSGIApplication([
