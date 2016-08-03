@@ -4,13 +4,15 @@
     <!-- Getting the Google Maps API script -->
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <!-- Getting the jQuery script You will need to activate the API and get your own key from appengine.google.com -->
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ6OqnPOFlTvJtrAbtdjkFocL0i_68AZI&libraries=places&callback=init"></script>
-  <script type="text/javascript" src="scripts/website.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ6OqnPOFlTvJtrAbtdjkFocL0i_68AZI&libraries=places"></script>
   <!-- And finally our script -->
+  <script type="text/javascript" src="scripts/website.js"></script>
+
+
     <title>GetVentures</title>
-    <h1>GetVentures Event</h1>
     <link rel ="stylesheet" type="text/css" href="stylesheets/styles.css">
   </head>
+      <h1>GetVentures Event</h1>
   <h4 class = "center"> Welcome to the {{ session_name }} adventure! </h4>
   <p><h4 class = "center"> You will be meeting at a {{ place_type }} </h4></p>
 

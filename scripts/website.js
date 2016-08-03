@@ -1,6 +1,6 @@
-var map;
-var service;
-var infowindow;
+// var map;
+// var service;
+// var infowindow;
 
 // function initialize() {
 //   var newyork = new google.maps.LatLng(40,-74);
@@ -23,19 +23,19 @@ var infowindow;
 // }
 
 // Initialization for the Maps APIs
-function initialize() {
+function partyFunction() {
    var mapOptions = {
-     center: { lat: -34.397, lng: 150.644},
+     center: new google.maps.LatLng(40,-74),
      zoom: 8
    };
-   map = new google.maps.Map(document.getElementById('map-canvas'),
-       mapOptions);
+   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
+google.maps.event.addDomListener(window, "load", partyFunction);
 // The google Map frame has a number of events like any other HTML element.
 // Here we set an handler to inialize the map when the map loads. You can
 // add listeners for "click", "move" and so on...
-google.maps.event.addDomListener(window, 'load', initialize);
+// google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
@@ -48,11 +48,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 //Technical map options here
-function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      var place = results[i];
-      createMarker(results[i]);
-    }
-  }
-}
+// function callback(results, status) {
+//   if (status == google.maps.places.PlacesServiceStatus.OK) {
+//     for (var i = 0; i < results.length; i++) {
+//       var place = results[i];
+//       createMarker(results[i]);
+//     }
+//   }
+// }
