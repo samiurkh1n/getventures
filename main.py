@@ -108,6 +108,7 @@ class AccountHandler(webapp2.RequestHandler):
         firstname = self.request.get('firstname')
         lastname = self.request.get('lastname')
         user_email = self.request.get('email') #add into html
+        print app_user.user_id()
         current_user = GvUser(email=user_email,first_name=firstname,last_name=lastname,id=app_user.user_id())
         current_user.put()
         
@@ -132,7 +133,7 @@ class EventHandler(webapp2.RequestHandler):
         Output is the map and list and the subsequent storage into an object of type Event (ndb model). 
         '''
         template = jinja_environment.get_template('templates/output.html')
-        
+        app_user = users.get_current_user()
 
         #User input stored as variables
         session_name = self.request.get('session_name')
@@ -144,7 +145,7 @@ class EventHandler(webapp2.RequestHandler):
         place_type = self.request.get('place_type') 
         
         #send data to datastore
-        current_session = Meetup(name=session_name,event_admin="samiurkh1n@gmail.com",guest1=session_guest1,guest2=session_guest2,guest3=session_guest3,guest4=session_guest4,guest5=session_guest5,type_of_places=place_type)
+        current_session = Meetup(name=session_name,event_admin=app_user.email(),guest1=session_guest1,guest2=session_guest2,guest3=session_guest3,guest4=session_guest4,guest5=session_guest5,type_of_places=place_type)
         current_session.put()
 
         template_vars = {
