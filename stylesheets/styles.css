@@ -1,5 +1,6 @@
 body {
   background-image: url(http://www.planwallpaper.com/static/images/518164-backgrounds.jpg);
+  font-family: fantasy;
 }
 
 h1 {
@@ -21,6 +22,10 @@ button {
   top:50%;
   left:50%;
   background-color: #1E90FF;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border: 5px solid #009900;
+  padding: 5px;
 
 }
 
@@ -31,9 +36,10 @@ h2 {
 	#create {
     height: 100px;
    width: 400px;
+   font-size: 30px;
   }
 
-  #dropdown {
-    width:150px;
-    height:400px;
+
+  select {
+    font-size: 50 px;
   }
