@@ -36,8 +36,8 @@ class MainHandler(webapp2.RequestHandler):
         '''
         app_user = users.get_current_user()
         # Check to see if user logged in
-        if user:
-            self.greeting = ('Welcome, %s (<a href="%s">Sign out</a>)') %(user.nickname(), users.create_logout_url('/'))
+        if app_user:
+            self.greeting = ('Welcome, %s (<a href="%s">Sign out</a>)') %(app_user.nickname(), users.create_logout_url('/'))
         else:
             self.greeting = ('<a href="%s">Sign in or register</a>') %users.create_login_url('/')
         return self.greeting
@@ -65,7 +65,8 @@ class MainHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
         # add an if branch here to test if the user's first name is the database, in which case if it isn't redirect to account
-            app_user = GvUser.get_by_id(users.user_id())
+            
+            app_user = GvUser.get_by_id(user.user_id())
             if app_user:
                 loggedin_alert = '<script> alert("Welcome back!"); </script>'
                 self.response.write('%s' %loggedin_alert)  
