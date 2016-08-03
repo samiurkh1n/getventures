@@ -152,8 +152,8 @@ class EventHandler(webapp2.RequestHandler):
         current_session.put()
 
         template_vars = {
-            'session_name' = session_name,
-            'place_type' = place_type
+            'session_name': session_name,
+            'place_type':place_type
             }
 
 app = webapp2.WSGIApplication([
