@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head id="head">
+    <div id="event">
     <title>GetVentures</title>
     <h1 class= "center">Plan your Adventure!</h1>
     <link rel ="stylesheet" type="text/css" href="stylesheets/styles.css">
@@ -8,24 +9,27 @@
 
   <body>
     <form method =post action ="event">
-    <div id="event">
 
-      <p class = "center">Create a Name for this Event <input type="text" name="session_name"/></p>
+
+      <p class = "center">Create a Name for this Event: <input type="text" name="session_name"/></p>
 
     </div>
 
     <div class= "center" id = "blob">
-      <p><b> <h1 class= "center">Invite Friends! (leave email line blank)</h1></b>
+      <p><b> <h1 class= "center">Invite Friends!</h1></b>
+        <p><h4 class= "center">*you do not need to fill out all emails</h4>
 
-      <p class= "center">Add Friend #1 Email <input type="email" name="session_guest1"/></p>
-      <p class= "center">Add Friend #2 Email <input type="email" name="session_guest2"/></p>
-      <p class= "center">Add Friend #3 Email <input type="email" name="session_guest3"/></p>
-      <p class= "center">Add Friend #4 Email <input type="email" name="session_guest4"/></p>
-      <p class= "center">Add Friend #5 Email <input type="email" name="session_guest5"/></p>
+      <p class= "center">Add Friend #1 Email: <input type="email" name="session_guest1"/></p>
+      <p class= "center">Add Friend #2 Email: <input type="email" name="session_guest2"/></p>
+      <p class= "center">Add Friend #3 Email: <input type="email" name="session_guest3"/></p>
+      <p class= "center">Add Friend #4 Email: <input type="email" name="session_guest4"/></p>
+      <p class= "center">Add Friend #5 Email: <input type="email" name="session_guest5"/></p>
 
+    </div>
+<h2 class= "center">Select what you would like to do!</h2>
+<div class= "center" id=dropdown>
 
-    <h2 class= "center">Select what you would like to do!</h2>
-      <select id="dropdown" name="place_type" class= "center">
+  <select name="place_type" class= "center">
       <option class= "center" value="restuarant" >Restaurant</option>
       <option class= "center" value="cafe" >Cafe</option>
       <option class= "center" value="park" >Park</option>
@@ -35,9 +39,10 @@
     </select>
 </div>
 
-
+<div class="center">
 
       <p><button id = "create"> <type="submit"><b>Create your own adventure!</b></button></p>
+</div>
 
 
   </form>
