@@ -127,8 +127,8 @@ class AccountHandler(webapp2.RequestHandler):
                               first_name=firstname,
                               last_name=lastname,
                               id=app_user.user_id(),
-                              app_user.lastknown_latitude=latitude,
-                              app_user.lastknown_longitude=longitude)
+                              lastknown_latitude=latitude,
+                              lastknown_longitude=longitude)
         current_user.put()
         self.redirect('/event') 
 
