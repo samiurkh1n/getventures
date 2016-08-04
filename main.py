@@ -177,24 +177,33 @@ class EventHandler(webapp2.RequestHandler):
 
         current_session.put()
 
-        #fetch user lat and long here with the email
+        #fetch user lat and long here with the email, returns center lat adnd long
         people = [event_admin,session_guest1,session_guest2,session_guest3,session_guest4,session_guest5] 
         latitude = 0.0
         longitude = 0.0
+        num_of_people = 0
+        print people
         for person in people:
             user = GvUser.query(GvUser.email == person).get()
-            print user
-            #print user.lastknown_latitude
-            user_lat = float(user.lastknown_latitude)
-            user_long = float(user.lastknown_longitude)
-            latitude += user_lat
-            longitude += user_long
+            
+            if user:
+                num_of_people += 1
+                user_lat = float(user.lastknown_latitude)
+                user_long = float(user.lastknown_longitude)
+                latitude += user_lat
+                longitude += user_long
+            else:
+                pass
 
+        cent_lat = latitude/num_of_people
+        cent_long = longitude/num_of_people
 
         #send to jinja
         template_vars = {
             'session_name': session_name,
-            'place_type':place_type
+            'place_type':place_type,
+            'cent_lat':cent_lat,
+            'cent_long':cent_long
             }
 
         self.response.write(template.render(template_vars))
