@@ -18,9 +18,12 @@
 //This function is going to display the map on the website using a already
 // pre-installed latitude and longitude coordinates
 
+var cent_lat = $('#cent_lat').data();
+var cent_long = $('#cent_long').data();
+
 function partyFunction() {
-  var coord = new google.maps.LatLng(cent_lat,cent_long);
-   map = new google.maps.Map(document.getElementById('map-canvas'), {
+    var coord = new google.maps.LatLng(cent_lat,cent_long);
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
       center: coord,
       zoom: 15
     });
@@ -28,9 +31,9 @@ function partyFunction() {
 /// instantiate a variable named request pass in three arguments such as location,
 // radius and the query
   var request = {
-    location: newyork,
+    location: coord,
     radius: '500',
-    query: ['restaurant']
+    query: ['{{place_type|safe}}']
   };
 
 //copy the procedure for building a map and place it in a variable called service

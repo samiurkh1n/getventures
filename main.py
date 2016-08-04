@@ -67,8 +67,6 @@ class MainHandler(webapp2.RequestHandler):
         # Executes with POST/. Specifically, when the user clicks on the "Plan meetup" button.
         # Does not allow redirect to /event if user not logged in.
         user = users.get_current_user()
-        template = jinja_environment.get_template('templates/main.html')
-        self.response.write(template.render())
         if user:
             # Attain and store the user's last known location
             app_user = GvUser.get_by_id(user.user_id())
