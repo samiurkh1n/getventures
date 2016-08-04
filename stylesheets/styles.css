@@ -56,5 +56,6 @@ h2 {
   }
 
 /*#location{
-    dispay: none
-  }*/
+    display: none;
+   visibility: hidden;
+  }
