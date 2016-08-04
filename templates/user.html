@@ -4,23 +4,28 @@
     <title>GetVentures</title>
     <h1 class= "center">Enter the following information to register!</h1>
     <link rel ="stylesheet" type="text/css" href="stylesheets/styles.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
   </head>
 
   <body>
-    <form method =post>
-    <div class = "center">
+    <form method = POST class=
+    "center">
+    <div>
       <b>First name:</b> <input type = "text" name="firstname"><br>
       <b>Last name:</b> <input type = "text" name="lastname"><br>
-      <b>Email Address:</b><input type = "email" name="email"><br>
     </div>
 
     <div>
-      <p type = "text" id="lat" name="lat"></p>
-      <p type = "text" id="long" name="long"></p>
+      <p> <input type = "text" id="lat" name="lat"></p>
+      <p> <input type = "text" id="long" name="long"></p>
     </div>
+
+    <div class="center">
 
 
       <button id = "enter"> <type="submit">Submit your info!</button>
+    </div>
 
 
   </form><br><br><br>

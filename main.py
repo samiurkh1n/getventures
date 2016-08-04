@@ -15,12 +15,12 @@ from models import GvUser
 from models import Meetup
 
 #Every html file is rendered with the jinja library.
-jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__))) 
+jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 class MainHandler(webapp2.RequestHandler):
     '''
     This is the home page (the first page that a user request would render.
-    This page is a gateway to the application. 
+    This page is a gateway to the application.
     From the user perspective, either a user can create an account or, if they already have an account, they are forwarded to a page that
     allows them to plan events.
     From the server perspective, this handler allows us to store app-critical information about users and their location.
@@ -28,12 +28,12 @@ class MainHandler(webapp2.RequestHandler):
     When the user logs in, we store key info like their email, user_id (from the User API), and their last known lat and long.
     Their last known lat and long is used in the main application to track location and offer better recommendations for where they should hangout.
     '''
-    
+
     def check_login(self):
         '''
         Method that checks if the user is logged in (within the MainHandler object).
         Input originates from the User API. The user variable stores the user email.
-        Output is a set of text displaying the login status and the execution of the script that gets location (does not store it).  
+        Output is a set of text displaying the login status and the execution of the script that gets location (does not store it).
         '''
         #Checks user datastore and assign the user with app_user
         #If user does exist, we display text welcoming, them and offer to sign off. We also execute the script to attain their location.
@@ -49,7 +49,7 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         '''
         Executes when the GET / HTTP request is received.
-        Input is the GET request. 
+        Input is the GET request.
         Output is the rendering of main.html file located in templates folder.
         '''
         template = jinja_environment.get_template('templates/main.html')
@@ -57,12 +57,12 @@ class MainHandler(webapp2.RequestHandler):
         greeting = self.check_login()
         self.response.write("%s" %greeting)
         self.response.write(template.render())
- 
+
     def post(self):
         '''
-        Executes when the HTTP POST/ request is received. 
+        Executes when the HTTP POST/ request is received.
         Specifically, when the user clicks on the "Plan meetup" button.
-        Input is the POST request. User query string is stored via jinja variables. 
+        Input is the POST request. User query string is stored via jinja variables.
         '''
         # Executes with POST/. Specifically, when the user clicks on the "Plan meetup" button.
         # Does not allow redirect to /event if user not logged in.
@@ -72,7 +72,7 @@ class MainHandler(webapp2.RequestHandler):
         if user:
             # Attain and store the user's last known location
             app_user = GvUser.get_by_id(user.user_id())
-           
+
             if app_user:
                 latitude = self.request.get('lat')
                 longitude = self.request.get('long')
@@ -90,65 +90,66 @@ class MainHandler(webapp2.RequestHandler):
             greeting = self.check_login()
             self.response.write("%s" %greeting)
             self.response.write(template.render())
-        
+
 
 class AccountHandler(webapp2.RequestHandler):
     '''
     AccountHandler allows account holders to include information like first and last name.
-    This handler should execute if and only if the user has no first name and last name in the datastore. 
+    This handler should execute if and only if the user has no first name and last name in the datastore.
     '''
     def get(self):
         '''
-        Executes with GET /account. 
+        Executes with GET /account.
         Input is a GET request.
         Output is the rendering of account.html located in the templates folder.
         User.html is a form to add first and last name and should only execute if user first name and last name isn't stored already.
         '''
         template = jinja_environment.get_template('templates/user.html')
         self.response.write(template.render())
-        
+
     def post(self):
         '''
         Executes with the POST /account. User adds account information this way.
-        Input is a POST request.  User query string is stored via jinja variables. 
-        Output should 
+        Input is a POST request.  User query string is stored via jinja variables.
+        Output should
         1. Redisplay user inputs
         2. Store user input into User data store.
         '''
-        app_user = users.get_current_user()
+        user = users.get_current_user()
 
         firstname = self.request.get('firstname')
         lastname = self.request.get('lastname')
-        user_email = app_user.email()
+        user_email = user.email()
         latitude = self.request.get('lat')
         longitude = self.request.get('long')
 
-        current_user = GvUser(email=user_email,
+        app_user = GvUser(email=user_email,
                               first_name=firstname,
                               last_name=lastname,
-                              id=app_user.user_id(),
+                              id=user.user_id(),
                               lastknown_latitude=latitude,
                               lastknown_longitude=longitude)
-        current_user.put()
-        self.redirect('/event') 
+        app_user.put()
+        print app_user
+        self.redirect('/event')
 
 class EventHandler(webapp2.RequestHandler):
     def get(self):
-        ''' 
-        Executes when GET /event is received. 
+        '''
+        Executes when GET /event is received.
         Input is the GET /event request.
         Output is a rendering of the input.html file
         '''
         template = jinja_environment.get_template('templates/input.html')
         # Get location script should be triggered here and store location in datastore
         self.response.write(template.render())
-        
+
     def post(self):
         #THE MOST SIGNIFICANT FUNCTION ON THIS WEBSITE
         '''
         Executes when POST/event is received.
         Input is the user query attached to variables and other user data (ex: location in lat and long)
-        Output is the map and list and the subsequent storage into an object of type Event (ndb model). 
+        Output is the map and list and the subsequent storage into an object of type Event (ndb model).
         '''
         template = jinja_environment.get_template('templates/output.html')
         app_user = users.get_current_user()
@@ -160,8 +161,8 @@ class EventHandler(webapp2.RequestHandler):
         session_guest3 = self.request.get('session_guest3')
         session_guest4 = self.request.get('session_guest4')
         session_guest5 = self.request.get('session_guest5')
-        place_type = self.request.get('place_type') 
-        
+        place_type = self.request.get('place_type')
+
         #send data to datastore
         current_session = Meetup(
             name=session_name,
@@ -172,7 +173,7 @@ class EventHandler(webapp2.RequestHandler):
             guest4=session_guest4,
             guest5=session_guest5,
             type_of_places=place_type)
-        
+
         current_session.put()
 
         #fetch user lat and long here with the email
