@@ -130,7 +130,6 @@ class AccountHandler(webapp2.RequestHandler):
                               lastknown_latitude=latitude,
                               lastknown_longitude=longitude)
         app_user.put()
-        print app_user
         self.redirect('/event')
 
 class EventHandler(webapp2.RequestHandler):
@@ -156,6 +155,7 @@ class EventHandler(webapp2.RequestHandler):
 
         #User input stored as variables
         session_name = self.request.get('session_name')
+        event_admin=app_user.email()
         session_guest1 = self.request.get('session_guest1')
         session_guest2 = self.request.get('session_guest2')
         session_guest3 = self.request.get('session_guest3')
@@ -173,15 +173,25 @@ class EventHandler(webapp2.RequestHandler):
             guest4=session_guest4,
             guest5=session_guest5,
             type_of_places=place_type)
+        
 
         current_session.put()
 
         #fetch user lat and long here with the email
+        people = [event_admin,session_guest1,session_guest2,session_guest3,session_guest4,session_guest5] 
+        latitude = 0.0
+        longitude = 0.0
+        for person in people:
+            user = GvUser.query(GvUser.email == person).get()
+            print user
+            #print user.lastknown_latitude
+            user_lat = float(user.lastknown_latitude)
+            user_long = float(user.lastknown_longitude)
+            latitude += user_lat
+            longitude += user_long
 
-        #calculate center lat and long
 
-        #send that lat and long to jinja template and access that data with jquery
-
+        #send to jinja
         template_vars = {
             'session_name': session_name,
             'place_type':place_type
