@@ -3,6 +3,7 @@
   <head>
     <title>GetVentures</title>
     <h1 class= "center">Enter the following information!</h1>
+    <script src="scripts/getlocation.js"></script>
     <link rel ="stylesheet" type="text/css" href="stylesheets/styles.css">
   </head>
 
@@ -12,10 +13,12 @@
       <b>First name:</b> <input type = "text" name="firstname"><br>
       <b>Last name:</b> <input type = "text" name="lastname"><br>
       <b>Email Address:</b><input type = "email" name="email"><br>
-
     </div>
 
-
+    <div>
+      <p type = "text" id="lat" name="lat"></p>
+      <p type = "text" id="long" name="long"></p>
+    </div>
 
 
       <button id = "enter"> <type="submit">Submit your name!</button>
