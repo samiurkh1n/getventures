@@ -19,9 +19,9 @@
 // pre-installed latitude and longitude coordinates
 
 function partyFunction() {
-  var newyork = new google.maps.LatLng(40.7503973,-74.3159636);
+  var coord = new google.maps.LatLng(cent_lat,cent_long);
    map = new google.maps.Map(document.getElementById('map-canvas'), {
-      center: newyork,
+      center: coord,
       zoom: 15
     });
 
@@ -30,21 +30,44 @@ function partyFunction() {
   var request = {
     location: newyork,
     radius: '500',
-    query: ['store']
+    query: ['restaurant']
   };
 
-//copy the procedure for building a map and place it in a variable called service 
+//copy the procedure for building a map and place it in a variable called service
   service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback)
 }
+
+markers = [];
+
+function print_place(place) {
+  $('#map-info').append(
+    "<h1 class='header'>Place Info  </h1> <br>" +
+    "Place name:  <b>" +
+    place.name + "</b>" +
+    "<br> Place address:  <b>        </b>" +
+    place.formatted_address + "</b>"
+  );
+  console.log(place);
+}
+
 function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       var place = results[i];
       var marker = new google.maps.Marker({
           map: map,
-          position: place.geometry.location
+          position: place.geometry.location,
+          info: place,
         });
+      markers.push(marker);
+      console.log(place);
+      google.maps.event.addListener(markers[i],
+              'click',
+              function() {
+                print_place(this.info);
+              }
+      );
       //createMarker(results[i]);
     }
   }

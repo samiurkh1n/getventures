@@ -6,7 +6,7 @@
   <!-- Getting the jQuery script You will need to activate the API and get your own key from appengine.google.com -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ6OqnPOFlTvJtrAbtdjkFocL0i_68AZI&libraries=places"></script>
   <!-- And finally our script -->
-  <script type="text/javascript" src="scripts/getlocation.js"></script>
+
 
 
     <title>GetVentures</title>
@@ -16,10 +16,17 @@
   <h4 class = "center"> Welcome to the {{ session_name }} adventure! </h4>
   <p><h4 class = "center"> You will be meeting at a {{ place_type }} </h4></p>
 
+  <div id="layout">
 
+
+    
+    <div id="map-info"></div>
     <div id="map-canvas"></div>
 
 
 
+  </div>
+
+  <script type="text/javascript" src="scripts/website.js"></script>
   </body>
 </html>
