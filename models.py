@@ -24,5 +24,5 @@ class Meetup(ndb.Model):
     guest4 = ndb.StringProperty(required=False)
     guest5 = ndb.StringProperty(required=False)
     type_of_places = ndb.StringProperty(required=True)
-    recommendation_map = ndb.StringProperty(required=False)
-    recommendation_list = ndb.StringProperty(required=False)
+    center_lat = ndb.StringProperty(required=False)
+    center_long = ndb.StringProperty(required=False)

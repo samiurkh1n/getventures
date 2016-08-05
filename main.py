@@ -128,7 +128,7 @@ class AccountHandler(webapp2.RequestHandler):
                               lastknown_latitude=latitude,
                               lastknown_longitude=longitude)
         app_user.put()
-        self.redirect('/event')
+        self.redirect('/')
 
 class EventHandler(webapp2.RequestHandler):
     def get(self):
@@ -161,20 +161,6 @@ class EventHandler(webapp2.RequestHandler):
         session_guest5 = self.request.get('session_guest5')
         place_type = self.request.get('place_type')
 
-        #send data to datastore
-        current_session = Meetup(
-            name=session_name,
-            event_admin=app_user.email(),
-            guest1=session_guest1,
-            guest2=session_guest2,
-            guest3=session_guest3,
-            guest4=session_guest4,
-            guest5=session_guest5,
-            type_of_places=place_type)
-        
-
-        current_session.put()
-
         #fetch user lat and long here with the email, returns center lat adnd long
         people = [event_admin,session_guest1,session_guest2,session_guest3,session_guest4,session_guest5] 
         latitude = 0.0
@@ -205,6 +191,22 @@ class EventHandler(webapp2.RequestHandler):
             }
 
         self.response.write(template.render(template_vars))
+
+        #send data to datastore
+        current_session = Meetup(
+            name=session_name,
+            event_admin=app_user.email(),
+            guest1=session_guest1,
+            guest2=session_guest2,
+            guest3=session_guest3,
+            guest4=session_guest4,
+            guest5=session_guest5,
+            type_of_places=place_type,
+            center_lat=str(cent_lat),
+            center_long=str(cent_long))
+        
+
+        current_session.put()
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
