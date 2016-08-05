@@ -18,10 +18,11 @@
 //This function is going to display the map on the website using a already
 // pre-installed latitude and longitude coordinates
 
-var cent_lat = $('#cent_lat').data();
-var cent_long = $('#cent_long').data();
+var cent_lat = $("#center_data").attr("cent_lat");
+var cent_long = $("#center_data").attr("cent_long")
 
 function partyFunction() {
+    console.log("Party!!!! " + cent_lat + " " + cent_long);
     var coord = new google.maps.LatLng(cent_lat,cent_long);
     map = new google.maps.Map(document.getElementById('map-canvas'), {
       center: coord,
