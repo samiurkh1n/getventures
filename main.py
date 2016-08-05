@@ -74,8 +74,12 @@ class MainHandler(webapp2.RequestHandler):
             if app_user:
                 latitude = self.request.get('lat')
                 longitude = self.request.get('long')
-                app_user.lastknown_latitude = latitude
-                app_user.lastknown_longitude = longitude
+                if latitude == "" or longitude == "":
+                    app_user.lastknown_latitude = "40.741"
+                    app_user.lastknown_longitude = "-74.003"
+                else:
+                    app_user.lastknown_latitude = latitude
+                    app_user.lastknown_longitude = longitude
                 app_user.put()
                 self.redirect('/event')
             else:
@@ -172,8 +176,13 @@ class EventHandler(webapp2.RequestHandler):
             
             if user:
                 num_of_people += 1
-                user_lat = float(user.lastknown_latitude)
-                user_long = float(user.lastknown_longitude)
+                if user.lastknown_latitude and user.lastknown_longitude:
+                    user_lat = float(user.lastknown_latitude)
+                    user_long = float(user.lastknown_longitude)
+                else:
+                    # This is the default - Google NYC
+                    user_lat = 40.7411734
+                    user_long = -74.00303705
                 latitude += user_lat
                 longitude += user_long
             else:
