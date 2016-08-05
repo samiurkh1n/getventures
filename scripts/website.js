@@ -19,7 +19,9 @@
 // pre-installed latitude and longitude coordinates
 
 var cent_lat = $("#center_data").attr("cent_lat");
-var cent_long = $("#center_data").attr("cent_long")
+var cent_long = $("#center_data").attr("cent_long");
+var place_type = $("#center_data").attr("place_type"); // var variable that references that user input
+console.log(place_type);
 
 function partyFunction() {
     console.log("Party!!!! " + cent_lat + " " + cent_long);
@@ -34,7 +36,7 @@ function partyFunction() {
   var request = {
     location: coord,
     radius: '500',
-    query: ['{{place_type|safe}}']
+    query: ['{{place_type|' + place_type + '}}']
   };
 
 //copy the procedure for building a map and place it in a variable called service
